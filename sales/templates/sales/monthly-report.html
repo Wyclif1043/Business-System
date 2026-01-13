@@ -1,0 +1,12 @@
+<table class="table table-bordered">
+<tr>
+    <th>Month</th>
+    <th>Total Items Sold</th>
+</tr>
+{% for s in sales %}
+<tr>
+    <td>{{ s.month }}</td>
+    <td>{{ s.total_sales }}</td>
+</tr>
+{% endfor %}
+</table>

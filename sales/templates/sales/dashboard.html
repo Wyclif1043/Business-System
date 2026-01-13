@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Daily Profit Dashboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .profit { color: green; font-weight: bold; }
+        .loss { color: red; font-weight: bold; }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-3">
+
+    <h4 class="text-center mb-3">📊 Daily Profit Dashboard</h4>
+
+    <!-- DATE FILTER -->
+    <form method="get" class="card p-3 mb-3">
+        <label class="form-label">Select Date</label>
+        <input type="date"
+               name="date"
+               class="form-control"
+               value="{{ today|date:'Y-m-d' }}">
+        <button class="btn btn-primary mt-2 w-100">Filter</button>
+    </form>
+
+    <!-- SALES TABLE -->
+    <div class="card mb-3">
+        <div class="card-header fw-bold">
+            Sales Summary ({{ today }})
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm mb-0 text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Sales (Ksh)</th>
+                        <th>Cost (Ksh)</th>
+                        <th>Commission (Ksh)</th>
+                        <th>Profit (Ksh)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in product_summary %}
+                    <tr>
+                        <td>{{ item.product }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.sales }}</td>
+                        <td>{{ item.cost }}</td>
+                        <td>{{ item.commission }}</td>
+                        <td class="{% if item.profit >= 0 %}profit{% else %}loss{% endif %}">
+                            {{ item.profit }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No sales for this date</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="card">
+        <div class="card-header fw-bold">
+            Daily Summary
+        </div>
+
+        <table class="table table-bordered table-sm mb-0">
+            <tr><th>Total Sales</th><td>{{ total_sales }}</td></tr>
+            <tr><th>Total Cost</th><td>{{ total_cost }}</td></tr>
+            <tr><th>Total Commission</th><td>{{ total_commission }}</td></tr>
+            <tr><th>Total Expenses</th><td>{{ total_expenses }}</td></tr>
+            <tr>
+                <th>Net Profit</th>
+                <td class="{% if net_profit >= 0 %}profit{% else %}loss{% endif %}">
+                    {{ net_profit }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="d-grid gap-2 mt-3">
+        <a href="{% url 'add_sale' %}" class="btn btn-success">➕ Add Sale</a>
+        <a href="{% url 'monthly_report' %}" class="btn btn-secondary">📈 Monthly Report</a>
+        <a href="{% url 'export_excel' %}" class="btn btn-outline-primary">📤 Export Excel</a>
+    </div>
+
+</div>
+
+</body>
+</html>
