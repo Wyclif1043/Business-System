@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: biashara-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: biashara
+  template:
+    metadata:
+      labels:
+        app: biashara
+    spec:
+      containers:
+        - name: biashara
+          image: biashara:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
