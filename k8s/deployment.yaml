@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: biashara
-          image: biashara:latest
-          imagePullPolicy: Never
+          image: wyclif1043/biashara:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
